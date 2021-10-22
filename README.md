@@ -1,8 +1,8 @@
-# queueingsimulator
+# Queueing Simulator 
 
 QueingSimulator is an application that can be used to build intuitions about behavior of synchronous request/reply systems (such as a modern web service) under different loads and configuration parameters. More specifically, it examines the impact request queueing has on possibility of congestion collapse.
 
-Most modern web service and application frameworks use a queueing system to enqueue incoming requests when there are no idle worker threads available to handle them. These queues can be great for minimizing transient failures, as they allow the application to ride through a temporary spike in incoming requests without dropping any of them. However, for synchronous request/reply system they can also be a big availability risk. This happens when a large enough queue builds up that by the time a request makes it to the front of the queue, the client would’ve timed out and most likely retried with a fresh new request. When this happens, the server is essentially doing throw away work (client is no longer waiting for a reply) and the system can suffer a congestion collapse. There are many different mechanisms for reducing this risk, and some of them include tuning the queue size, or even flipping the queue from a FIFO to a LIFO order. This simulator allows one to examine this behavior by running a simulation with different parameters and recording the results.
+Most modern web service and application frameworks use a queueing system to enqueue incoming requests when there are no idle workers available to handle them. These queues can be great for minimizing transient failures, as they allow the application to ride through a temporary spike in incoming requests without dropping any of them on the floor. However, for synchronous request/reply system these can pose a big availability risk. This happens when a large enough queue builds up that by the time a request makes it to the front of the queue, the client would’ve timed out and most likely retried with a fresh new request. When this happens, the server is essentially doing throw away work and the system suffers a congestion collapse. There are several mechanisms for reducing this risk, including approaches like load shedding and cooperative clients. This simulator allows one to explore impact of tuning queueing subsystem (including disabling it altogether or flipping from FIFO to LIFO order) on the possiblity of congestion collapse. 
 
 Each execution of the simulator runs a single simulator with specified parameters, and then reports the percentage of the requests that failed, either because they were timed out or rejected by the server when its queue was full. The simulator uses a virtual clock, and as such can simulate hours or even days of runtime in milliseconds.
 
@@ -28,7 +28,7 @@ Each execution of the simulator runs a single simulator with specified parameter
 
 ## Building and running
 
-This is a rust application, so head on down to https://www.rust-lang.org/tools/install to install rust toolchain. Once install, run “cargo build --release" from the repo directory. The compiled application will be in ./target/release directory.
+This is a Rust application, so you will need the latest Rust toolchain to build and run it. Hhead on down to https://www.rust-lang.org/tools/install to install the Rust toolchain. Once installed, run “cargo build --release" from the repo directory. The compiled application will be in ./target/release directory.
 
 Running the simulator:
 
