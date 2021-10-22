@@ -1,7 +1,7 @@
 use rand::distributions::Distribution;
+use rand::{thread_rng, Rng};
 use rand_distr::Normal;
 use std::collections::VecDeque;
-use rand::{Rng, thread_rng};
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
@@ -70,6 +70,8 @@ fn main() {
     let mut total_requests = 0;
     let mut spike_ticks;
     if opt.simulate_spike {
+        // Simulate a service under duress, by temporarily increasing the latency for the firstr
+        // 0.1% of the total ticks.
         spike_ticks = opt.simulation_ticks / 1000;
     } else {
         spike_ticks = 0;
@@ -89,7 +91,8 @@ fn main() {
             total_requests += 1;
 
             // Normal distribution can produce negative results.
-            let mut execution_time = 0.0_f64.max(latency_distribution.sample(&mut rand::thread_rng()));
+            let mut execution_time =
+                0.0_f64.max(latency_distribution.sample(&mut rand::thread_rng()));
             if spike_ticks > 0 {
                 // If we are simulating a short term latency spike, increase the latency of each request by 10x
                 spike_ticks -= 1;
