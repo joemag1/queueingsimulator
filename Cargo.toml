@@ -1,0 +1,10 @@
+[package]
+name = "queueingsimulator"
+edition = "2021"
+version = "0.1.0"
+publish = false
+
+[dependencies]
+rand = "0.8"
+rand_distr = "0.4"
+structopt = "0.3"
